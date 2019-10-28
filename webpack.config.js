@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const SpritesmithPlugin = require('webpack-spritesmith');
+// const SpritesmithPlugin = require('webpack-spritesmith');
 
 const config = {
   mode: 'development',
@@ -26,21 +26,21 @@ const config = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js']
   },
-  plugins: [
-    new SpritesmithPlugin({
-      src: {
-        cwd: path.resolve(__dirname, 'src/assets/grind'),
-        glob: '*.png'
-      },
-      target: {
-        image: path.resolve(__dirname, 'src/assets/sprite.png'),
-        css: path.resolve(__dirname, 'src/assets/sprite.styl')
-      },
-      apiOptions: {
-        cssImageRef: "~sprite.png"
-      }
-    })
-  ],
+  // plugins: [
+  //   new SpritesmithPlugin({
+  //     src: {
+  //       cwd: path.resolve(__dirname, 'src/assets/idle'),
+  //       glob: '*.png'
+  //     },
+  //     target: {
+  //       image: path.resolve(__dirname, 'src/assets/sprite.png'),
+  //       css: path.resolve(__dirname, 'src/assets/sprite.styl')
+  //     },
+  //     apiOptions: {
+  //       cssImageRef: "~sprite.png"
+  //     }
+  //   })
+  // ],
   watch: true
 };
 

@@ -1,56 +1,43 @@
-const canvas = document.getElementById('canvas')
+import Hero from './components/Hero'
 
 class App {
   private context: any;
-  private sprite: HTMLImageElement;
-  private width: number;
-  private height: number;
-  private currentFrame: number;
-  private frames: number;
+  private document: any;
+  private hero: Hero;
 
-  public constructor(canvas: any) {
-    this.context = canvas.getContext('2d');
-    this.sprite = new Image();
-    this.width = 1316;
-    this.height = 1384;
-    this.currentFrame = 0;
-    this.frames = 5;
-    this.loadSprite();
+  public constructor(document: any, hero: Hero) {
+    this.document = document;
+    this.hero = hero;
+    this.context = document.getElementById('canvas').getContext('2d');
+    this.animateHero();
   }
 
-  private async loadSprite() {
-    this.sprite.src = (await import('./assets/sprite.png')).default;
-
-    setInterval(() => {
-      this.draw()
-    }, 80);
+  private async animateHero() {
+    await this.hero.loadSprites();
+    this.hero.animate(this.context);
+    this.addListeners();
   }
 
-  private draw() {
-    this.context.clearRect(0, 0, this.width, this.height);
-
-    this.context.drawImage(
-      this.sprite,
-      this.currentFrame > 2
-        ? this.width * (this.currentFrame - 3)
-        : this.width * this.currentFrame,
-      this.currentFrame > 2
-        ? this.height
-        : 0,
-      this.width,
-      this.height,
-      0,
-      0,
-      this.width / 4,
-      this.height / 4
-    );
-
-    if (this.currentFrame == this.frames) {
-      this.currentFrame = 0;
-    } else {
-      this.currentFrame++;
-    }
+  private addListeners() {
+    this.document.addEventListener('keyup', (e: any) => {
+      if (e.code == "Space") {
+        this.hero.execute('jumpAttack');
+        return;
+      }
+      if (e.code == "KeyW") {
+        this.hero.execute('jump');
+        return;
+      }
+      if (e.code == "KeyS") {
+        this.hero.execute('slide');
+        return;
+      }
+      if (e.code == "Escape") {
+        this.hero.execute('dead');
+        return;
+      }
+    })
   }
 }
 
-new App(canvas);
+new App(document, new Hero(24));
