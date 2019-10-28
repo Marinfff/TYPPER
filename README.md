@@ -1,5 +1,5 @@
-# empty-electron-ts 
-Electron + ts + webpack project
+# Game
+Electron + ts + webpack 2d runner
 
 ## Project setup
 ```
