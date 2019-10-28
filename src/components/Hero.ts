@@ -61,7 +61,7 @@ class Hero implements HeroInterface {
     setTimeout(() => {
       this.currentFrame = 0;
       this.current = this.sprites.run;
-    }, 500)
+    }, 1000 / this.fps * this.totalFrame);
   }
 
   public animate(context: any) {
