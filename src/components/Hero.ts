@@ -1,94 +1,81 @@
-interface SpritesInterface {
-  [value: string]: Array<HTMLImageElement>,
-}
-
-interface HeroInterface {
-  loadSprites(): void,
-
-  execute(action: string): void,
-
-  animate(context: any): void,
-}
-
-class Hero implements HeroInterface {
-  private sprites: SpritesInterface;
+class Hero {
+  private sprites: any;
   private current: any;
-  private totalFrame: number;
-  private fps: number;
-  private width: number;
-  private height: number;
-  private currentFrame: number;
-  private frames: number;
+  private previous: any;
+  private width: any;
+  private fps: any;
+  private height: any;
+  private currentFrame: any;
 
-  public constructor(fps: number) {
-    this.fps = fps;
-    this.current = [];
-    this.width = 524;
-    this.height = 565;
+  public constructor() {
+    this.width = 1316;
+    this.height = 1384;
     this.currentFrame = 0;
-    this.frames = 9;
-    this.totalFrame = 10;
+    this.fps = 25;
     this.sprites = {
-      jump: [],
-      dead: [],
-      attack: [],
-      idle: [],
-      jumpAttack: [],
-      run: [],
-      slide: []
+      grind: new Image(),
+      idle: new Image(),
+      jump: new Image(),
+      run: new Image()
     };
   }
 
-  private async completeSprite(sprite: string) {
-    for await (const [index, item] of this.sprites[sprite].entries()) {
-      item.src = (await import(`../assets/${sprite}/${index}.png`)).default
-    }
+  public setSprites(sprites: any) {
+    this.sprites.grind.src = sprites.grind.default;
+    this.sprites.idle.src = sprites.idle.default;
+    this.sprites.jump.src = sprites.jump.default;
+    this.sprites.run.src = sprites.run.default;
+    this.current = this.sprites.idle;
   }
 
-  public async loadSprites() {
-    for await (const sprite of Object.keys(this.sprites)) {
-      this.sprites[sprite] = [...new Array(this.totalFrame)];
-      this.sprites[sprite] = this.sprites[sprite].map(() => new Image());
-      await this.completeSprite(sprite);
-    }
+  public idle() {
+    this.currentFrame = 0;
+    this.current = this.sprites.idle;
+  }
+
+  public run() {
+    this.currentFrame = 0;
     this.current = this.sprites.run;
   }
 
-  public execute(action: string) {
+  public grind() {
     this.currentFrame = 0;
-    this.current = this.sprites[action];
+    this.current = this.sprites.grind;
+  }
+
+  public jump() {
+    this.currentFrame = 0;
+    this.previous = this.current;
+    this.current = this.sprites.jump;
 
     setTimeout(() => {
       this.currentFrame = 0;
-      this.current = this.sprites.run;
-    }, 1000 / this.fps * this.totalFrame);
+      this.current = this.previous;
+    }, 1000 / this.fps * this.totalFrame());
   }
 
-  public animate(context: any) {
-    context.clearRect(0, 0, this.width, this.height);
+  public animate (context: any) {
     context.drawImage(
-      this.current[this.currentFrame],
+      this.current,
       0,
-      0,
+      this.height * this.currentFrame,
       this.width,
       this.height,
-      0,
-      0,
-      this.width,
-      this.height
+      200,
+      595,
+      this.width / 4,
+      this.height / 4
     );
 
-    if (this.currentFrame == this.frames) {
+    if (this.currentFrame == this.totalFrame()) {
       this.currentFrame = 0;
     } else {
       this.currentFrame++;
     }
+  }
 
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        this.animate(context);
-      });
-    }, 1000 / this.fps);
+  private totalFrame() {
+    return this.current.height / this.height - 1
   }
 }
 
