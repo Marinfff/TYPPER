@@ -34,7 +34,6 @@ class Hero {
   }
 
   public run() {
-    this.currentFrame = 0;
     this.current = this.sprites.run;
   }
 
