@@ -16,7 +16,7 @@ class Game {
   public async init() {
     await this.loadHero();
     await this.loadBack();
-    await this.loadBrick();
+    await this.loadGround();
     this.addListeners();
     this.animate();
   };
@@ -30,7 +30,7 @@ class Game {
     })
   }
 
-  public async loadBrick() {
+  public async loadGround() {
     this.ground.setGround({
       left: await import('../assets/ground/left.png'),
       right: await import('../assets/ground/right.png'),
