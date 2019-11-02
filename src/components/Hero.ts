@@ -11,7 +11,7 @@ class Hero {
     this.width = 1316;
     this.height = 1384;
     this.currentFrame = 0;
-    this.fps = 25;
+    this.fps = 24;
     this.sprites = {
       grind: new Image(),
       idle: new Image(),
@@ -25,7 +25,7 @@ class Hero {
     this.sprites.idle.src = sprites.idle.default;
     this.sprites.jump.src = sprites.jump.default;
     this.sprites.run.src = sprites.run.default;
-    this.current = this.sprites.idle;
+    this.current = this.sprites.run;
   }
 
   public idle() {
@@ -53,7 +53,7 @@ class Hero {
     }, 1000 / this.fps * this.totalFrame());
   }
 
-  public animate (context: any) {
+  public animate(context: any) {
     context.drawImage(
       this.current,
       0,

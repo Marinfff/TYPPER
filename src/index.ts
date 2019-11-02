@@ -1,7 +1,7 @@
 import Game from './core/Game'
 import Hero from "./components/Hero";
 import Background from "./components/Background";
-import Brick from "./components/Brick";
+import Ground from "./components/Ground";
 
 const canvas = document.getElementById('canvas');
 
@@ -14,7 +14,7 @@ const game = new Game(
   canvas,
   new Hero(),
   new Background(),
-  new Brick()
+  new Ground()
 );
 
 game.init();

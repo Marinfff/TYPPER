@@ -2,13 +2,15 @@ class Game {
   public canvas: any;
   public hero: any;
   public back: any;
-  public brick: any;
+  public ground: any;
+  public fps: any;
 
-  public constructor(canvas: any, hero: any, back: any, brick: any) {
+  public constructor(canvas: any, hero: any, back: any, ground: any) {
     this.canvas = canvas.getContext('2d');
+    this.fps = 24;
     this.hero = hero;
     this.back = back;
-    this.brick = brick;
+    this.ground = ground;
   };
 
   public async init() {
@@ -19,16 +21,37 @@ class Game {
     this.animate();
   };
 
-  private animate () {
+  public async loadHero() {
+    this.hero.setSprites({
+      grind: await import('../assets/hero/grind.png'),
+      idle: await import('../assets/hero/idle.png'),
+      jump: await import('../assets/hero/jump.png'),
+      run: await import('../assets/hero/run.png')
+    })
+  }
+
+  public async loadBrick() {
+    this.ground.setGround({
+      left: await import('../assets/ground/left.png'),
+      right: await import('../assets/ground/right.png'),
+      mid: await import('../assets/ground/mid.png'),
+    })
+  }
+
+  public async loadBack() {
+    this.back.setBackground(await import('../assets/background/forest.png'))
+  }
+
+  private animate() {
     this.back.animate(this.canvas);
-    this.brick.animate(this.canvas);
+    this.ground.animate(this.canvas);
     this.hero.animate(this.canvas);
 
     setTimeout(() => {
       requestAnimationFrame(() => {
         this.animate();
       });
-    }, 1000 / 25);
+    }, 1000 / this.fps);
   }
 
   private addListeners() {
@@ -37,7 +60,7 @@ class Game {
         this.hero.run();
         return;
       }
-    })
+    });
     document.addEventListener('keyup', (e: any) => {
       if (e.code == "Space") {
         this.hero.jump();
@@ -48,22 +71,6 @@ class Game {
         return;
       }
     })
-  }
-
-  public async loadHero() {
-    await this.hero.setSprites({
-      grind: await import('../assets/hero/grind.png'),
-      idle: await import('../assets/hero/idle.png'),
-      jump: await import('../assets/hero/jump.png'),
-      run: await import('../assets/hero/run.png')
-    })
-  }
-
-  public async loadBack() {
-    await this.back.setBackground(await import('../assets/background/forest.png'))
-  }
-  public async loadBrick() {
-    await this.brick.setBrick(await import('../assets/brick/grassMid.png'))
   }
 }
 
