@@ -8,8 +8,8 @@ class Hero {
   private currentFrame: any;
 
   public constructor() {
-    this.width = 1316;
-    this.height = 1384;
+    this.width = 329;
+    this.height = 346;
     this.currentFrame = 0;
     this.fps = 24;
     this.sprites = {
@@ -61,9 +61,9 @@ class Hero {
       this.width,
       this.height,
       200,
-      595,
-      this.width / 4,
-      this.height / 4
+      window.innerHeight - 375,
+      this.width,
+      this.height
     );
 
     if (this.currentFrame == this.totalFrame()) {

@@ -21,7 +21,7 @@ class Ground {
     context.drawImage(
       this.ground[action],
       position,
-      865
+      window.innerHeight - 105
     );
   }
 

@@ -29,7 +29,7 @@ class Background {
       0
     );
 
-    this.camera -= 15;
+    this.camera -= 20;
 
     if (this.camera < 0) {
       this.camera = 1024

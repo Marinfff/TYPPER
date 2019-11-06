@@ -1,16 +1,16 @@
 class Game {
-  public canvas: any;
+  public scene: any;
   public hero: any;
   public back: any;
   public ground: any;
   public fps: any;
 
-  public constructor(canvas: any, hero: any, back: any, ground: any) {
-    this.canvas = canvas.getContext('2d');
+  public constructor(hero: any, back: any, ground: any, scene: any) {
     this.fps = 24;
     this.hero = hero;
     this.back = back;
     this.ground = ground;
+    this.scene = scene;
   };
 
   public async init() {
@@ -22,12 +22,12 @@ class Game {
   };
 
   public async loadHero() {
-    this.hero.setSprites({
-      grind: await import('../assets/hero/grind.png'),
-      idle: await import('../assets/hero/idle.png'),
-      jump: await import('../assets/hero/jump.png'),
-      run: await import('../assets/hero/run.png')
-    })
+      this.hero.setSprites({
+        grind: await import('../assets/hero/grind.png'),
+        idle: await import('../assets/hero/idle.png'),
+        jump: await import('../assets/hero/jump.png'),
+        run: await import('../assets/hero/run.png')
+      })
   }
 
   public async loadGround() {
@@ -43,9 +43,9 @@ class Game {
   }
 
   private animate() {
-    this.back.animate(this.canvas);
-    this.ground.animate(this.canvas);
-    this.hero.animate(this.canvas);
+    this.scene.draw(this.back);
+    this.scene.draw(this.ground);
+    this.scene.draw(this.hero);
 
     setTimeout(() => {
       requestAnimationFrame(() => {
