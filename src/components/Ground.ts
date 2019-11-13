@@ -20,7 +20,7 @@ class Ground {
       );
     }
 
-    this.camera -= 20 ;
+    this.camera -= 20;
 
     if (this.camera < -window.innerWidth) {
       this.camera = 0;

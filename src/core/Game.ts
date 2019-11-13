@@ -27,6 +27,7 @@ class Game {
   public async loadGround() {
     this.ground.setGround(await import('../assets/ground/ground.png'))
   }
+
   public async loadStone() {
     this.stone.setStone(await import('../assets/ground/stone.png'))
   }
@@ -52,13 +53,13 @@ class Game {
     this.scene.add(this.hero);
   }
 
-  private checkPosition () {
+  private checkPosition() {
     if (
       this.stone.getPosition() > this.hero.position().start
       && this.stone.getPosition() < this.hero.position().end
       && this.hero.action() !== 'jump'
-    ){
-        window.location.reload()
+    ) {
+      window.location.reload()
     }
   }
 
@@ -78,6 +79,9 @@ class Game {
       if (e.code == "Space") {
         this.hero.jump();
       }
+    });
+    document.addEventListener('touchstart', () => {
+      this.hero.jump();
     })
   }
 }

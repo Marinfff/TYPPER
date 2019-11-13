@@ -11,13 +11,13 @@ class Stone {
     this.stone.src = stone.default;
   }
 
-  public getPosition () {
+  public getPosition() {
     return window.innerWidth + this.camera
   }
 
   public animate(context: any) {
     context.clearRect(
-      window.innerWidth + 30  + this.camera,
+      window.innerWidth + 30 + this.camera,
       window.innerHeight - 140,
       this.stone.width,
       this.stone.height,

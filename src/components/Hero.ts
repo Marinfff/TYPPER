@@ -32,14 +32,14 @@ class Hero {
     this.current = this.sprites.run;
   }
 
-  public position () {
+  public position() {
     return {
       start: this.startPosition,
       end: this.startPosition + 150
     }
   }
 
-  public action () {
+  public action() {
     return this.currentAction
   }
 
