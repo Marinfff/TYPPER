@@ -1,20 +1,31 @@
 class Scene {
-  private canvas: any;
-  private context: any;
+  private app: any;
+  private objects: Array<any>;
 
-  public constructor () {
-    this.canvas = document.getElementById('canvas');
-    this.context = this.canvas.getContext('2d');
-    this.setAttribute()
+  public constructor() {
+    this.app = document.getElementById('app');
+    this.objects = [];
   }
 
-  private setAttribute () {
-    this.canvas.setAttribute('width', window.innerWidth);
-    this.canvas.setAttribute('height', window.innerHeight);
+  public add(instance: any) {
+    const canvas = document.createElement('canvas',);
+    const context = canvas.getContext('2d');
+
+    canvas.setAttribute('width', window.innerWidth.toString());
+    canvas.setAttribute('height', window.innerHeight.toString());
+
+    this.app.append(canvas);
+
+    this.objects.push({
+      context,
+      instance
+    });
   }
 
-  public draw(object: any) {
-    object.animate(this.context)
+  public render() {
+    this.objects.forEach((item) => {
+      item.instance.animate(item.context);
+    })
   }
 }
 

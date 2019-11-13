@@ -4,36 +4,32 @@ class Ground {
 
   public constructor() {
     this.camera = 0;
-    this.ground = {
-      left: new Image(),
-      right: new Image(),
-      mid: new Image(),
-    };
+    this.ground = new Image();
   }
 
-  public setGround(brick: any) {
-    this.ground.left.src = brick.left.default;
-    this.ground.right.src = brick.right.default;
-    this.ground.mid.src = brick.mid.default;
-  }
-
-  public print(context: any, action: string, position: number) {
-    context.drawImage(
-      this.ground[action],
-      position,
-      window.innerHeight - 105
-    );
+  public setGround(ground: any) {
+    this.ground.src = ground.default;
   }
 
   public animate(context: any) {
-    for (let i = 0; i < 4200; i += 70) {
-      this.print(context, 'mid', i + this.camera)
+    for (let i = 0; i < 2800; i += 70) {
+      context.drawImage(
+        this.ground,
+        i + this.camera,
+        window.innerHeight - 105
+      );
     }
 
-    this.camera -= 15;
+    this.camera -= 20 ;
 
-    if (this.camera < -2100) {
-      this.camera = 0
+    if (this.camera < -window.innerWidth) {
+      this.camera = 0;
+      context.clearRect(
+        -window.innerWidth - 100,
+        window.innerHeight - 105,
+        this.ground.width,
+        this.ground.height
+      );
     }
   }
 }

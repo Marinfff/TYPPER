@@ -1,5 +1,7 @@
 class Hero {
   private sprites: any;
+  private startPosition: any;
+  private currentAction: any;
   private current: any;
   private previous: any;
   private width: any;
@@ -10,8 +12,10 @@ class Hero {
   public constructor() {
     this.width = 329;
     this.height = 346;
+    this.currentAction = 'run';
+    this.startPosition = 200;
     this.currentFrame = 0;
-    this.fps = 24;
+    this.fps = 30;
     this.sprites = {
       grind: new Image(),
       idle: new Image(),
@@ -26,6 +30,17 @@ class Hero {
     this.sprites.jump.src = sprites.jump.default;
     this.sprites.run.src = sprites.run.default;
     this.current = this.sprites.run;
+  }
+
+  public position () {
+    return {
+      start: this.startPosition,
+      end: this.startPosition + 150
+    }
+  }
+
+  public action () {
+    return this.currentAction
   }
 
   public idle() {
@@ -43,24 +58,34 @@ class Hero {
   }
 
   public jump() {
-    this.currentFrame = 0;
-    this.previous = this.current;
-    this.current = this.sprites.jump;
-
-    setTimeout(() => {
+    if (this.currentAction !== 'jump') {
       this.currentFrame = 0;
-      this.current = this.previous;
-    }, 1000 / this.fps * this.totalFrame());
+      this.currentAction = 'jump';
+      this.previous = this.current;
+      this.current = this.sprites.jump;
+
+      setTimeout(() => {
+        this.currentFrame = 0;
+        this.current = this.previous;
+        this.currentAction = 'run';
+      }, 1000 / this.fps * this.totalFrame());
+    }
   }
 
   public animate(context: any) {
+    context.clearRect(
+      this.startPosition,
+      window.innerHeight - 375,
+      this.width,
+      this.height,
+    );
     context.drawImage(
       this.current,
       0,
       this.height * this.currentFrame,
       this.width,
       this.height,
-      200,
+      this.startPosition,
       window.innerHeight - 375,
       this.width,
       this.height

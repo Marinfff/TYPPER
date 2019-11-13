@@ -12,27 +12,32 @@ class Background {
   }
 
   public animate(context: any) {
-    context.clearRect(0, 0, this.background.width, this.background.height);
     context.drawImage(
       this.background,
-      -1024 + this.camera,
+      0 + this.camera,
       0
     );
     context.drawImage(
       this.background,
-      this.camera,
+      1024 + this.camera,
       0
     );
     context.drawImage(
       this.background,
-      this.camera + 1024,
+      2048 + this.camera,
       0
     );
 
-    this.camera -= 20;
+    this.camera -= 24;
 
-    if (this.camera < 0) {
-      this.camera = 1024
+    if (this.camera < -1024) {
+      this.camera = 0;
+      context.clearRect(
+        -1024,
+        0,
+        this.background.width,
+        this.background.height
+      );
     }
   }
 }
