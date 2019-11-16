@@ -1,9 +1,9 @@
 class Scene {
-  private app: any;
+  private scene: any;
   private objects: Array<any>;
 
   public constructor() {
-    this.app = document.getElementById('app');
+    this.scene = document.getElementById('scene');
     this.objects = [];
   }
 
@@ -14,7 +14,7 @@ class Scene {
     canvas.setAttribute('width', window.innerWidth.toString());
     canvas.setAttribute('height', window.innerHeight.toString());
 
-    this.app.append(canvas);
+    this.scene.append(canvas);
 
     this.objects.push({
       context,

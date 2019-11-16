@@ -17,16 +17,12 @@ class Hero {
     this.currentFrame = 0;
     this.fps = 30;
     this.sprites = {
-      grind: new Image(),
-      idle: new Image(),
       jump: new Image(),
       run: new Image()
     };
   }
 
   public setSprites(sprites: any) {
-    this.sprites.grind.src = sprites.grind.default;
-    this.sprites.idle.src = sprites.idle.default;
     this.sprites.jump.src = sprites.jump.default;
     this.sprites.run.src = sprites.run.default;
     this.current = this.sprites.run;
@@ -43,18 +39,8 @@ class Hero {
     return this.currentAction
   }
 
-  public idle() {
-    this.currentFrame = 0;
-    this.current = this.sprites.idle;
-  }
-
   public run() {
     this.current = this.sprites.run;
-  }
-
-  public grind() {
-    this.currentFrame = 0;
-    this.current = this.sprites.grind;
   }
 
   public jump() {
@@ -75,7 +61,7 @@ class Hero {
   public animate(context: any) {
     context.clearRect(
       this.startPosition,
-      window.innerHeight - 375,
+      window.innerHeight - 450,
       this.width,
       this.height,
     );
@@ -86,7 +72,7 @@ class Hero {
       this.width,
       this.height,
       this.startPosition,
-      window.innerHeight - 375,
+      window.innerHeight - 450,
       this.width,
       this.height
     );

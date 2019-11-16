@@ -18,14 +18,14 @@ class Stone {
   public animate(context: any) {
     context.clearRect(
       window.innerWidth + 30 + this.camera,
-      window.innerHeight - 140,
+      window.innerHeight - 210,
       this.stone.width,
       this.stone.height,
     );
     context.drawImage(
       this.stone,
       window.innerWidth + this.camera,
-      window.innerHeight - 140
+      window.innerHeight - 210
     );
 
     this.camera -= 30;
