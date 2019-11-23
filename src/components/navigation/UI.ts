@@ -1,14 +1,54 @@
-class UI {
-  private menu: any;
-  private loader: any;
+export interface UserInterfaceInterface {
+  showGameOver(score: number): void,
+
+  toggleLoader(): void,
+
+  confirmGameOver(): Promise<any>,
+
+  confirmGameStart(): Promise<any>,
+}
+
+export class UserInterface implements UserInterfaceInterface {
+  private userInterface: any;
+  private showLoader: boolean;
+  private showEndModal: boolean;
+  private score: number;
 
   public constructor() {
-    this.menu = document.getElementById('menu');
-    this.loader = false;
-    this.render();
+    this.userInterface = document.getElementById('interface');
+    this.score = 0;
+    this.showLoader = false;
+    this.showEndModal = false;
+    this.show();
   }
 
-  public userChoice() {
+  public showGameOver(score: number) {
+    this.score = score;
+    this.showEndModal = true;
+    this.show();
+  }
+
+  public toggleLoader() {
+    if (this.showLoader) {
+      this.showLoader = false;
+      this.hide();
+    } else {
+      this.showLoader = true;
+      this.show();
+    }
+  }
+
+  public confirmGameOver(): Promise<any> {
+    const ok: any = document.getElementById('ok');
+
+    return new Promise((resolve) => {
+      ok.addEventListener('click', () => {
+        resolve();
+      });
+    })
+  }
+
+  public confirmGameStart(): Promise<any> {
     const start: any = document.getElementById('start');
     const exit: any = document.getElementById('exit');
 
@@ -17,30 +57,24 @@ class UI {
         resolve();
       });
       exit.addEventListener('click', () => {
-        reject()
+        reject();
       })
     })
   }
 
-  public showLoader() {
-    this.loader = true;
-    this.render();
+  private hide() {
+    this.userInterface.innerHTML = '';
   }
 
-  public hideLoader() {
-    this.loader = false;
-    this.hideMenu();
-  }
-
-  private hideMenu() {
-    this.menu.setAttribute('style', 'display: none')
-  }
-
-  private render() {
+  private show() {
     const width: number = 300;
     const height: number = 75;
-    this.menu.innerHTML = `
-      <svg
+
+    this.userInterface.innerHTML = `
+      ${
+      !this.showEndModal
+        ?
+        `<svg
        id="background"    
        width="${window.innerWidth}"
        height="${window.innerHeight}"
@@ -74,9 +108,11 @@ class UI {
            </g>
           </g>
          </g>
-        </svg>
+        </svg>`
+        : ''
+    }
       ${
-      this.loader
+      this.showLoader
         ? `
       <svg 
         id="preloader" 
@@ -151,8 +187,67 @@ class UI {
       </svg>
       `
     }
+      ${
+      this.showEndModal
+        ? `
+        <svg
+        id="buttons"
+        width="${window.innerWidth}"
+        height="${window.innerHeight}"
+        >
+         <g id="start">
+        <rect 
+          x="${(window.innerWidth / 2) - 500 / 2}" 
+          y="${window.innerHeight / 2 - 200}" 
+          width="500" 
+          height="500" 
+          fill="#ff9100" 
+          stroke="#a66d21" 
+          rx="20"
+          stroke-width="3" 
+        />
+         <text 
+           x="50%" 
+           y="${window.innerHeight / 2 - 160}" 
+           dominant-baseline="middle" 
+           text-anchor="middle"
+         >
+         Game Over
+         </text> 
+            <text 
+           x="50%" 
+           y="${window.innerHeight / 2 + 50}" 
+           dominant-baseline="middle" 
+           text-anchor="middle"
+         >
+         Your score: ${this.score}
+         </text>   
+        <g id="ok">
+         <rect 
+          x="${(window.innerWidth / 2) - width / 2}" 
+          y="${window.innerHeight / 2 + 200}" 
+          width="${width}" 
+          height="${height}" 
+          fill="#ff9100" 
+          stroke="#a66d21" 
+          rx="20"
+          stroke-width="3" 
+        />
+         <text 
+           x="50%" 
+           y="${window.innerHeight / 2 + 240}" 
+           dominant-baseline="middle" 
+           text-anchor="middle"
+         >
+          OK
+         </text>   
+           </g> 
+         </g>
+      </svg>
+      `
+        : ``
+    }
     `
   }
 }
 
-export default UI

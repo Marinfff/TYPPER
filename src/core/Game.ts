@@ -1,62 +1,89 @@
-class Game {
-  public scene: any;
-  public ui: any;
-  public hero: any;
-  public back: any;
-  public stone: any;
-  public fps: any;
+import {BackgroundInterface} from "../components/Background";
+import {HeroInterface} from "../components/Hero";
+import {SceneInterface} from "./Scene";
+import {StoneInterface} from "../components/Stone";
+import {UserInterfaceInterface} from "../components/navigation/UI";
 
-  public constructor(hero: any, back: any, stone: any, scene: any, ui: any) {
+interface GameInterface {
+  init(): void
+}
+
+class Game implements GameInterface {
+  public scene: SceneInterface;
+  public userInterface: UserInterfaceInterface;
+  public hero: HeroInterface;
+  public background: BackgroundInterface;
+  public stone: StoneInterface;
+  public score: number;
+  public fps: number;
+
+  public constructor(
+    hero: HeroInterface,
+    background: BackgroundInterface,
+    stone: StoneInterface,
+    scene: SceneInterface,
+    userInterface: UserInterfaceInterface
+  ) {
     this.fps = 30;
+    this.score = 0;
     this.hero = hero;
-    this.back = back;
+    this.background = background;
     this.stone = stone;
     this.scene = scene;
-    this.ui = ui;
+    this.userInterface = userInterface;
   };
 
-  public async loadHero() {
+  public async init() {
+    await this.userInterface.confirmGameStart();
+    this.userInterface.toggleLoader();
+    await this.loadHero();
+    await this.loadEnvironment();
+    this.addListeners();
+    this.userInterface.toggleLoader();
+    this.initScene();
+    this.animateScene();
+  };
+
+  private async loadHero() {
     this.hero.setSprites({
       jump: await import('../assets/hero/jump.png'),
       run: await import('../assets/hero/run.png')
     })
   }
 
-  public async loadEnvironment() {
+  private async loadEnvironment() {
     this.stone.setStone(await import('../assets/ground/stone.png'));
-    this.back.setBackground(await import('../assets/background/forest.png'));
+    this.background.setBackground(await import('../assets/background/forest.png'));
   }
 
-  public async init() {
-    await this.ui.userChoice();
-    this.ui.showLoader();
-    await this.loadHero();
-    await this.loadEnvironment();
-    this.addListeners();
-    this.ui.hideLoader();
-    this.initScene();
-    this.animateScene();
-  };
-
   private initScene() {
-    this.scene.add(this.back);
+    this.scene.add(this.background);
     this.scene.add(this.stone);
     this.scene.add(this.hero);
   }
 
-  private checkPosition() {
-    if (
-      this.stone.getPosition() > this.hero.position().start
-      && this.stone.getPosition() < this.hero.position().end
-      && this.hero.action() !== 'jump'
-    ) {
-      window.location.reload()
-    }
+  private isFail() {
+    return (
+      this.stone.getPosition() > this.hero.getPosition().start
+      && this.stone.getPosition() < this.hero.getPosition().end
+      && this.hero.getAction() !== 'jump'
+    )
+  }
+
+  private async gameEnd() {
+    this.userInterface.showGameOver(this.score);
+    await this.userInterface.confirmGameOver();
+    window.location.reload();
   }
 
   private animateScene() {
     this.scene.render();
-    this.checkPosition();
+    this.score += 1;
+
+    if (this.isFail()) {
+      this.gameEnd();
+      return;
+    }
 
     setTimeout(() => {
       requestAnimationFrame(() => {

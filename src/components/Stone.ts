@@ -1,6 +1,14 @@
-class Stone {
-  private stone: any;
-  private camera: any;
+export interface StoneInterface {
+  setStone(stone: any): void,
+
+  getPosition(): number,
+
+  animate(context: any): void
+}
+
+export class Stone implements StoneInterface {
+  private camera: number;
+  private readonly stone: HTMLImageElement;
 
   public constructor() {
     this.camera = 0;
@@ -35,6 +43,4 @@ class Stone {
     }
   }
 }
-
-export default Stone
 

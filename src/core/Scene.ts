@@ -1,32 +1,36 @@
-class Scene {
+export interface SceneInterface {
+  add(instance: any): void,
+
+  render(): void
+}
+
+export class Scene implements SceneInterface {
   private scene: any;
-  private objects: Array<any>;
+  private sceneObjects: Array<any>;
 
   public constructor() {
     this.scene = document.getElementById('scene');
-    this.objects = [];
+    this.sceneObjects = [];
   }
 
   public add(instance: any) {
-    const canvas = document.createElement('canvas',);
-    const context = canvas.getContext('2d');
+    const item = document.createElement('canvas');
+    const context = item.getContext('2d');
 
-    canvas.setAttribute('width', window.innerWidth.toString());
-    canvas.setAttribute('height', window.innerHeight.toString());
+    item.setAttribute('width', window.innerWidth.toString());
+    item.setAttribute('height', window.innerHeight.toString());
 
-    this.scene.append(canvas);
+    this.scene.append(item);
 
-    this.objects.push({
+    this.sceneObjects.push({
       context,
       instance
     });
   }
 
   public render() {
-    this.objects.forEach((item) => {
+    this.sceneObjects.forEach((item) => {
       item.instance.animate(item.context);
     })
   }
 }
-
-export default Scene

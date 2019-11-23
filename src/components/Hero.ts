@@ -1,21 +1,37 @@
-class Hero {
+export interface HeroInterface {
+  setSprites(sprites: any): void,
+
+  jump(): void,
+
+  animate(context: any): void,
+
+  getAction(): string,
+
+  getPosition(): {
+    start: number,
+    end: number
+  },
+}
+
+export class Hero implements HeroInterface {
   private sprites: any;
-  private startPosition: any;
-  private currentAction: any;
-  private current: any;
-  private previous: any;
-  private width: any;
-  private fps: any;
-  private height: any;
-  private currentFrame: any;
+  private currentFrame: number;
+  private currentAction: string;
+  private currentSprite: any;
+  private previousSprite: any;
+  private readonly startPosition: number;
+  private readonly width: number;
+  private readonly fps: number;
+  private readonly height: number;
+
 
   public constructor() {
     this.width = 329;
     this.height = 346;
-    this.currentAction = 'run';
+    this.fps = 30;
     this.startPosition = 200;
     this.currentFrame = 0;
-    this.fps = 30;
+    this.currentAction = 'run';
     this.sprites = {
       jump: new Image(),
       run: new Image()
@@ -25,34 +41,30 @@ class Hero {
   public setSprites(sprites: any) {
     this.sprites.jump.src = sprites.jump.default;
     this.sprites.run.src = sprites.run.default;
-    this.current = this.sprites.run;
+    this.currentSprite = this.sprites.run;
   }
 
-  public position() {
+  public getPosition() {
     return {
       start: this.startPosition,
       end: this.startPosition + 150
     }
   }
 
-  public action() {
+  public getAction() {
     return this.currentAction
-  }
-
-  public run() {
-    this.current = this.sprites.run;
   }
 
   public jump() {
     if (this.currentAction !== 'jump') {
       this.currentFrame = 0;
       this.currentAction = 'jump';
-      this.previous = this.current;
-      this.current = this.sprites.jump;
+      this.previousSprite = this.currentSprite;
+      this.currentSprite = this.sprites.jump;
 
       setTimeout(() => {
         this.currentFrame = 0;
-        this.current = this.previous;
+        this.currentSprite = this.previousSprite;
         this.currentAction = 'run';
       }, 1000 / this.fps * this.totalFrame());
     }
@@ -66,7 +78,7 @@ class Hero {
       this.height,
     );
     context.drawImage(
-      this.current,
+      this.currentSprite,
       0,
       this.height * this.currentFrame,
       this.width,
@@ -85,8 +97,6 @@ class Hero {
   }
 
   private totalFrame() {
-    return this.current.height / this.height - 1
+    return this.currentSprite.height / this.height - 1
   }
 }
-
-export default Hero

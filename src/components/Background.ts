@@ -1,6 +1,12 @@
-class Background {
-  private background: any;
-  private camera: any;
+export interface BackgroundInterface {
+  setBackground(background: any): void,
+
+  animate(context: any): void
+}
+
+export class Background implements BackgroundInterface {
+  private background: HTMLImageElement;
+  private camera: number;
 
   public constructor() {
     this.background = new Image();
@@ -14,7 +20,7 @@ class Background {
   public animate(context: any) {
     context.drawImage(
       this.background,
-      0 + this.camera,
+      this.camera,
       0
     );
     context.drawImage(
@@ -41,6 +47,4 @@ class Background {
     }
   }
 }
-
-export default Background
 
