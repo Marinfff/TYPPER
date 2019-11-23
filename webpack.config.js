@@ -12,11 +12,15 @@ const config = {
   module: {
     rules: [
       {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /\.tsx?$/,
         use: 'ts-loader'
       },
       {
-        test: /\.(png|jp(e*)g|svg|mp3|wav)$/,
+        test: /\.(png|jp(e*)g|svg|mp3|ttf|woff|eot)$/,
         use: [
           {
             loader: 'url-loader',

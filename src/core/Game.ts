@@ -77,6 +77,11 @@ class Game implements GameInterface {
     )
   }
 
+  private upLevel() {
+    this.background.upLevel()
+    this.stone.upLevel()
+  }
+
   private async gameEnd() {
     this.userInterface.showGameOver(this.score);
     await this.loseSound.play();
@@ -91,6 +96,10 @@ class Game implements GameInterface {
     if (this.isGameEnd()) {
       this.gameEnd();
       return;
+    }
+
+    if (this.score % 200 == 0) {
+      this.upLevel()
     }
 
     setTimeout(() => {

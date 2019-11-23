@@ -1,20 +1,28 @@
 export interface BackgroundInterface {
   setBackground(background: any): void,
 
-  animate(context: any): void
+  animate(context: any): void,
+
+  upLevel(): void
 }
 
 export class Background implements BackgroundInterface {
   private camera: number;
+  private cameraSpeed: number;
   private readonly background: HTMLImageElement;
 
   public constructor() {
     this.background = new Image();
     this.camera = 0;
+    this.cameraSpeed = 30;
   }
 
   public setBackground(background: any) {
     this.background.src = background;
+  }
+
+  public upLevel() {
+    this.cameraSpeed += 5
   }
 
   public animate(context: any) {
@@ -34,7 +42,7 @@ export class Background implements BackgroundInterface {
       0
     );
 
-    this.camera -= 24;
+    this.camera -= this.cameraSpeed;
 
     if (this.camera < -1024) {
       this.camera = 0;

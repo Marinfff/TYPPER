@@ -143,10 +143,25 @@ export class UserInterface implements UserInterfaceInterface {
         width="${window.innerWidth}"
         height="${window.innerHeight}"
         >
+        ${
+          !this.showEndModal
+            ? `
+          <text
+             x="50%" 
+             class="logo"
+             y="${window.innerHeight / 4}" 
+             dominant-baseline="middle" 
+             text-anchor="middle"
+          >
+            Trololo Runner        
+         </text>
+        `
+            : ``
+        }
          <g id="start">
         <rect 
           x="${(window.innerWidth / 2) - width / 2}" 
-          y="${window.innerHeight / 2 - 200}" 
+          y="${window.innerHeight / 2 - 100}" 
           width="${width}" 
           height="${height}" 
           fill="#ff9100" 
@@ -156,7 +171,7 @@ export class UserInterface implements UserInterfaceInterface {
         />
          <text 
            x="50%" 
-           y="${window.innerHeight / 2 - 160}" 
+           y="${window.innerHeight / 2 - 60}" 
            dominant-baseline="middle" 
            text-anchor="middle"
          >
@@ -167,7 +182,7 @@ export class UserInterface implements UserInterfaceInterface {
           <rect 
             id="exit"
             x="${window.innerWidth / 2 - width / 2}" 
-            y="${window.innerHeight / 2 + -100}" 
+            y="${window.innerHeight / 2}" 
             width="${width}" 
             height="${height}" 
             fill="#ff9100" 
@@ -177,7 +192,7 @@ export class UserInterface implements UserInterfaceInterface {
             />
         <text 
           x="50%" 
-          y="${window.innerHeight / 2 - 60}" 
+          y="${window.innerHeight / 2 + 40}" 
           dominant-baseline="middle" 
           text-anchor="middle"
         >
@@ -191,11 +206,10 @@ export class UserInterface implements UserInterfaceInterface {
       this.showEndModal
         ? `
         <svg
-        id="buttons"
         width="${window.innerWidth}"
         height="${window.innerHeight}"
         >
-         <g id="start">
+         <g>
         <rect 
           x="${(window.innerWidth / 2) - 500 / 2}" 
           y="${window.innerHeight / 2 - 200}" 
@@ -208,6 +222,7 @@ export class UserInterface implements UserInterfaceInterface {
         />
          <text 
            x="50%" 
+           class="text"
            y="${window.innerHeight / 2 - 160}" 
            dominant-baseline="middle" 
            text-anchor="middle"
@@ -215,6 +230,7 @@ export class UserInterface implements UserInterfaceInterface {
          Game Over
          </text> 
             <text 
+              class="text"
            x="50%" 
            y="${window.innerHeight / 2 + 50}" 
            dominant-baseline="middle" 
@@ -234,6 +250,7 @@ export class UserInterface implements UserInterfaceInterface {
           stroke-width="3" 
         />
          <text 
+           class="text"
            x="50%" 
            y="${window.innerHeight / 2 + 240}" 
            dominant-baseline="middle" 
