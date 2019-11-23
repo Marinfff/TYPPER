@@ -1,3 +1,5 @@
+import Locale from '../config/locale.json';
+
 export interface UserInterfaceInterface {
   showGameOver(score: number): void,
 
@@ -153,7 +155,7 @@ export class UserInterface implements UserInterfaceInterface {
              dominant-baseline="middle" 
              text-anchor="middle"
           >
-            Trololo Runner        
+            ${Locale.logo}        
          </text>
         `
             : ``
@@ -175,7 +177,7 @@ export class UserInterface implements UserInterfaceInterface {
            dominant-baseline="middle" 
            text-anchor="middle"
          >
-         New Game
+            ${Locale.newGame}
          </text>    
          </g>
           <g id="exit">
@@ -196,7 +198,7 @@ export class UserInterface implements UserInterfaceInterface {
           dominant-baseline="middle" 
           text-anchor="middle"
         >
-        Exit
+          ${Locale.exit}
         </text>
         </g>
       </svg>
@@ -227,7 +229,7 @@ export class UserInterface implements UserInterfaceInterface {
            dominant-baseline="middle" 
            text-anchor="middle"
          >
-         Game Over
+          ${Locale.gameOver}
          </text> 
             <text 
               class="text"
@@ -236,7 +238,7 @@ export class UserInterface implements UserInterfaceInterface {
                dominant-baseline="middle" 
                text-anchor="middle"
          >
-         Your score: ${this.score}
+           ${Locale.score}: ${this.score}
          </text>
          <text 
            class="text"
@@ -245,7 +247,7 @@ export class UserInterface implements UserInterfaceInterface {
            dominant-baseline="middle" 
            text-anchor="middle"
          >
-         Record: ${localStorage.getItem('record')}
+          ${Locale.record}: ${localStorage.getItem('record')}
          </text>      
         <g id="ok">
          <rect 
@@ -265,7 +267,7 @@ export class UserInterface implements UserInterfaceInterface {
            dominant-baseline="middle" 
            text-anchor="middle"
          >
-          OK
+          ${Locale.ok}
          </text>   
            </g> 
          </g>

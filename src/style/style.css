@@ -64,3 +64,9 @@ canvas, svg {
     fill: #a65c0c;
 }
 
+@media screen and (max-width: 1080px) {
+    body {
+        transform: scale(0.7);
+    }
+}
+
