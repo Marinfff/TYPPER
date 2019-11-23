@@ -16,12 +16,12 @@ const config = {
         use: 'ts-loader'
       },
       {
-        test: /\.(png|jp(e*)g|svg)$/,
+        test: /\.(png|jp(e*)g|svg|mp3|wav)$/,
         use: [
           {
             loader: 'url-loader',
             options: {
-              name: 'images/[hash]-[name].[ext]'
+              name: '[hash]-[name].[ext]'
             }
           }
         ]
@@ -52,7 +52,7 @@ const config = {
 module.exports = [
   {
     ...config,
-    entry: path.join(__dirname, 'src', 'index.ts'),
+    entry: path.join(__dirname, 'index.ts'),
     output: {
       path: path.join(__dirname, 'dist'),
       filename: 'index.js'

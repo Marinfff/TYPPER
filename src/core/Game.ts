@@ -1,8 +1,9 @@
+import Api from "../services/api";
 import {BackgroundInterface} from "../components/Background";
 import {HeroInterface} from "../components/Hero";
-import {SceneInterface} from "./Scene";
 import {StoneInterface} from "../components/Stone";
-import {UserInterfaceInterface} from "../components/navigation/UI";
+import {SceneInterface} from "../views/Scene";
+import {UserInterfaceInterface} from "../views/UI";
 
 interface GameInterface {
   init(): void
@@ -16,6 +17,8 @@ class Game implements GameInterface {
   public stone: StoneInterface;
   public score: number;
   public fps: number;
+  public backSound: any;
+  public loseSound: any;
 
   public constructor(
     hero: HeroInterface,
@@ -27,6 +30,8 @@ class Game implements GameInterface {
     this.fps = 30;
     this.score = 0;
     this.hero = hero;
+    this.backSound = new Audio();
+    this.loseSound = new Audio();
     this.background = background;
     this.stone = stone;
     this.scene = scene;
@@ -34,26 +39,21 @@ class Game implements GameInterface {
   };
 
   public async init() {
+    await this.loadSound();
     await this.userInterface.confirmGameStart();
     this.userInterface.toggleLoader();
-    await this.loadHero();
     await this.loadEnvironment();
     this.addListeners();
-    this.userInterface.toggleLoader();
     this.initScene();
+    this.userInterface.toggleLoader();
     this.animateScene();
   };
 
-  private async loadHero() {
-    this.hero.setSprites({
-      jump: await import('../assets/hero/jump.png'),
-      run: await import('../assets/hero/run.png')
-    })
-  }
 
   private async loadEnvironment() {
-    this.stone.setStone(await import('../assets/ground/stone.png'));
-    this.background.setBackground(await import('../assets/background/forest.png'));
+    this.stone.setStone(await Api.loadStone());
+    this.background.setBackground(await Api.loadBackground());
+    this.hero.loadEnvironment(await Api.loadHero());
   }
 
   private initScene() {
@@ -62,7 +62,14 @@ class Game implements GameInterface {
     this.scene.add(this.hero);
   }
 
-  private isFail() {
+  private async loadSound() {
+    const sound = await Api.loadAudio();
+    this.backSound.src = sound.main;
+    this.loseSound.src = sound.lose;
+    this.backSound.autoplay = true
+  }
+
+  private isGameEnd() {
     return (
       this.stone.getPosition() > this.hero.getPosition().start
       && this.stone.getPosition() < this.hero.getPosition().end
@@ -72,6 +79,7 @@ class Game implements GameInterface {
 
   private async gameEnd() {
     this.userInterface.showGameOver(this.score);
+    await this.loseSound.play();
     await this.userInterface.confirmGameOver();
     window.location.reload();
   }
@@ -80,7 +88,7 @@ class Game implements GameInterface {
     this.scene.render();
     this.score += 1;
 
-    if (this.isFail()) {
+    if (this.isGameEnd()) {
       this.gameEnd();
       return;
     }

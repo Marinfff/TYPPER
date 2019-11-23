@@ -1,5 +1,5 @@
 export interface HeroInterface {
-  setSprites(sprites: any): void,
+  loadEnvironment(data: any): void,
 
   jump(): void,
 
@@ -19,6 +19,7 @@ export class Hero implements HeroInterface {
   private currentAction: string;
   private currentSprite: any;
   private previousSprite: any;
+  private sound: any;
   private readonly startPosition: number;
   private readonly width: number;
   private readonly fps: number;
@@ -32,15 +33,17 @@ export class Hero implements HeroInterface {
     this.startPosition = 200;
     this.currentFrame = 0;
     this.currentAction = 'run';
+    this.sound = new Audio();
     this.sprites = {
       jump: new Image(),
       run: new Image()
     };
   }
 
-  public setSprites(sprites: any) {
-    this.sprites.jump.src = sprites.jump.default;
-    this.sprites.run.src = sprites.run.default;
+  public loadEnvironment(data: any) {
+    this.sprites.jump.src = data.sprites.jump;
+    this.sprites.run.src = data.sprites.run;
+    this.sound.src = data.audio;
     this.currentSprite = this.sprites.run;
   }
 
@@ -61,6 +64,7 @@ export class Hero implements HeroInterface {
       this.currentAction = 'jump';
       this.previousSprite = this.currentSprite;
       this.currentSprite = this.sprites.jump;
+      this.sound.play();
 
       setTimeout(() => {
         this.currentFrame = 0;

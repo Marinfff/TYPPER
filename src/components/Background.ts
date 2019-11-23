@@ -5,8 +5,8 @@ export interface BackgroundInterface {
 }
 
 export class Background implements BackgroundInterface {
-  private background: HTMLImageElement;
   private camera: number;
+  private readonly background: HTMLImageElement;
 
   public constructor() {
     this.background = new Image();
@@ -14,7 +14,7 @@ export class Background implements BackgroundInterface {
   }
 
   public setBackground(background: any) {
-    this.background.src = background.default;
+    this.background.src = background;
   }
 
   public animate(context: any) {

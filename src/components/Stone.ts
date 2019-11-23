@@ -16,7 +16,7 @@ export class Stone implements StoneInterface {
   }
 
   public setStone(stone: any) {
-    this.stone.src = stone.default;
+    this.stone.src = stone;
   }
 
   public getPosition() {
