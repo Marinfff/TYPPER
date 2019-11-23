@@ -78,15 +78,20 @@ class Game implements GameInterface {
   }
 
   private upLevel() {
-    this.background.upLevel()
-    this.stone.upLevel()
+    this.background.upLevel();
+    this.stone.upLevel();
   }
 
   private async gameEnd() {
     this.userInterface.showGameOver(this.score);
+    this.saveRecord();
     await this.loseSound.play();
     await this.userInterface.confirmGameOver();
     window.location.reload();
+  }
+
+  private saveRecord () {
+    localStorage.setItem('record', this.score.toString());
   }
 
   private animateScene() {

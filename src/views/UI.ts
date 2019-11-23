@@ -231,13 +231,22 @@ export class UserInterface implements UserInterfaceInterface {
          </text> 
             <text 
               class="text"
+               x="50%" 
+               y="${window.innerHeight / 2}" 
+               dominant-baseline="middle" 
+               text-anchor="middle"
+         >
+         Your score: ${this.score}
+         </text>
+         <text 
+           class="text"
            x="50%" 
            y="${window.innerHeight / 2 + 50}" 
            dominant-baseline="middle" 
            text-anchor="middle"
          >
-         Your score: ${this.score}
-         </text>   
+         Record: ${localStorage.getItem('record')}
+         </text>      
         <g id="ok">
          <rect 
           x="${(window.innerWidth / 2) - width / 2}" 
