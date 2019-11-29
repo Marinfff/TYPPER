@@ -268,7 +268,7 @@ export class UserInterface implements UserInterfaceInterface {
            text-anchor="middle"
          >
           ${Locale.ok}
-         </text>   
+         </text>
            </g> 
          </g>
       </svg>

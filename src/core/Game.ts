@@ -10,15 +10,15 @@ interface GameInterface {
 }
 
 class Game implements GameInterface {
-  public scene: SceneInterface;
-  public userInterface: UserInterfaceInterface;
-  public hero: HeroInterface;
-  public background: BackgroundInterface;
-  public stone: StoneInterface;
-  public score: number;
-  public fps: number;
-  public backSound: any;
-  public loseSound: any;
+  private scene: SceneInterface;
+  private userInterface: UserInterfaceInterface;
+  private readonly hero: HeroInterface;
+  private readonly background: BackgroundInterface;
+  private readonly stone: StoneInterface;
+  private readonly fps: number;
+  private score: number;
+  private backSound: any;
+  private loseSound: any;
 
   public constructor(
     hero: HeroInterface,
