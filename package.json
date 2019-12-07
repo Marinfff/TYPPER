@@ -31,6 +31,7 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
+    "amazejs": "^1.0.3",
     "webpack-spritesmith": "^1.0.2"
   }
 }
