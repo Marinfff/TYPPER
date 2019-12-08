@@ -1,5 +1,5 @@
-# TROLOLO RUNNER
-TS + HTML5 + WEBPACK 2d runner
+# TYPPER
+TS + HTML5 + WEBPACK TYPPER
 
 ## Project setup
 ```
