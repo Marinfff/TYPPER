@@ -33,7 +33,6 @@
 }
 
 
-
 text {
     font-size: 25px;
     font-weight: bold;
@@ -60,15 +59,15 @@ canvas, svg {
 }
 
 .rect {
-    fill: #ce3735;
-    stroke: #f4f6f7;
+    fill: #006b29;
+    stroke: #00680c;
 }
 
 .logo {
     font-size: 90px;
     font-weight: bold;
     font-family: Cristinutza;
-    fill: #ce3735;
+    fill: #006b29;
 }
 
 @media screen and (max-width: 1080px) {

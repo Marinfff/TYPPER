@@ -14,15 +14,18 @@ export class UserInterface implements UserInterfaceInterface {
   private userInterface: any;
   private showLoader: boolean;
   private showEndModal: boolean;
+  private score: number;
 
   public constructor() {
     this.userInterface = document.getElementById('interface');
     this.showLoader = false;
     this.showEndModal = false;
+    this.score = 0
     this.show();
   }
 
-  public showGameOver() {
+  public showGameOver(score: number) {
+    this.score = score
     this.showEndModal = true;
     this.show();
   }
@@ -38,11 +41,11 @@ export class UserInterface implements UserInterfaceInterface {
   }
 
   public confirmGameOver(): Promise<any> {
-    const next: any = document.getElementById('next');
     const exit: any = document.getElementById('exit');
+    const reload: any = document.getElementById('reload');
 
     return new Promise((resolve, reject) => {
-      next.addEventListener('click', () => {
+      reload.addEventListener('click', () => {
         resolve();
       });
       exit.addEventListener('click', () => {
@@ -61,13 +64,13 @@ export class UserInterface implements UserInterfaceInterface {
     })
   }
 
-  private hide() {
-    this.userInterface.innerHTML = '';
-  }
-
-  public hideEndModal () {
+  public hideEndModal() {
     this.showEndModal = false;
     this.hide();
+  }
+
+  private hide() {
+    this.userInterface.innerHTML = '';
   }
 
   private show() {
@@ -178,9 +181,9 @@ export class UserInterface implements UserInterfaceInterface {
                dominant-baseline="middle" 
                text-anchor="middle"
          >
-           ${Locale.level}: ${2}
+           ${Locale.score}  ${this.score}
          </text>    
-        <g id="next">
+        <g id="reload">
          <text 
            class="text"
            x="55%" 
@@ -188,7 +191,7 @@ export class UserInterface implements UserInterfaceInterface {
            dominant-baseline="middle" 
            text-anchor="middle"
          >
-          ${Locale.next}
+          ${Locale.reload}
          </text>
            </g>
          <g id="exit">

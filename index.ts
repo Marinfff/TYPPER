@@ -1,101 +1,149 @@
 import "./src/style/style.css"
-import {Maze} from "./src/components/Maze";
-import {Player} from "./src/components/Player";
+
 import {UserInterface} from "./src/components/UI";
 
-const maze = new Maze();
-const player = new Player();
-const userInterface = new UserInterface();
+const userInterface = new UserInterface()
 
 class Game {
-  private maze: any;
-  private player: any;
   private backSound: any;
-  private winSound: any;
+  private loseSound: any;
+  private score: any;
+  private fps: any;
+  private canvas: any;
+  private context: any;
   private userInterface: any;
+  private letters: Array<any>;
+  private target: any;
 
-  constructor(maze: any, player: any, userInterface: any) {
-    this.maze = maze;
-    this.player = player;
+  constructor(userInterface: any) {
+    this.target = new Image();
+    this.letters = [];
+    this.fps = 10;
+    this.score = 0;
     this.userInterface = userInterface;
     this.backSound = new Audio();
-    this.winSound = new Audio();
+    this.loseSound = new Audio();
+    this.canvas = document.getElementById('canvas');
+    this.canvas.setAttribute('width', window.innerWidth);
+    this.canvas.setAttribute('height', window.innerHeight);
+    this.context = this.canvas.getContext('2d');
   }
 
   async init() {
+    this.target.src = (await import('./src/assets/images/target.png')).default
     await this.loadSound();
     await this.userInterface.confirmGameStart();
     this.userInterface.toggleLoader();
-    this.maze.setSprite(await import('./src/assets/images/box.png'))
-    await this.player.loadEnvironment({
-      top: await import('./src/assets/images/player/top.png'),
-      left: await import('./src/assets/images/player/left.png'),
-      bottom: await import('./src/assets/images/player/bottom.png'),
-      right: await import('./src/assets/images/player/right.png'),
-      audio: await import('./src/assets/sound/step.mp3'),
-    });
-    await this.maze.generate();
-    this.player.setMatrix(this.maze);
     this.addListeners();
+    this.setLetters();
+    this.render();
     this.userInterface.toggleLoader();
+  }
+
+  upLevel () {
+      this.fps += 5;
+      this.setLetters();
+  }
+
+
+  setLetters() {
+    const letter = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    console.log(letter)
+    this.letters = letter.map((item) => {
+      const coords = [this.getRandom(0, -500), this.getRandom(2000, 2500)];
+      return {
+        text: item,
+        x: coords[this.getRandom(0, 1)],
+        y: this.getRandom(-500, 1500)
+      }
+    })
+  }
+
+  private async gameEnd() {
+    this.userInterface.showGameOver(this.score);
+    await this.loseSound.play();
+
+    try {
+      await this.userInterface.confirmGameOver();
+      this.setLetters();
+      this.score = 0
+      this.render();
+      this.userInterface.hideEndModal();
+    } catch {
+      window.location.reload();
+    }
+  }
+
+  private isGameEnd(x: any, y: any) {
+    return (
+      (window.innerWidth / 2 - 64 < x && window.innerWidth / 2 + 64 > x)
+      && (window.innerHeight / 2 - 64 < y && window.innerHeight / 2 + 64 > y)
+    )
+  }
+
+  getRandom(min: any, max: any) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   private async loadSound() {
     this.backSound.src = (await import('./src/assets/sound/back.mp3')).default;
-    this.winSound.src = (await import('./src/assets/sound/win.mp3')).default;
-   await this.backSound.play()
+    this.loseSound.src = (await import('./src/assets/sound/win.mp3')).default;
+  //  await this.backSound.play()
   }
 
+  render() {
+    this.context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    this.context.drawImage(this.target, window.innerWidth / 2 - 64, window.innerHeight / 2 - 64);
 
-  async upLevel() {
-    await this.maze.next();
-    this.player.reset();
-    this.player.setMatrix(this.maze);
-  }
+    if (!this.letters.length) {
+      this.upLevel()
+    }
 
-  async checkEndLevel() {
-    if (
-      this.maze.getSize().width == this.player.getSquare().x + 3
-      && this.maze.getSize().height == this.player.getSquare().y + 3
-    ) {
-      await this.winSound.play()
-      this.userInterface.showGameOver();
+    for (const item of this.letters) {
+      this.context.font = "35px Comic Sans MS";
+      this.context.fillStyle = "white";
+      this.context.textAlign = "center";
+      this.context.fillText(item.text, item.x, item.y);
 
-      try {
-        await this.userInterface.confirmGameOver();
-        this.upLevel();
-        this.userInterface.hideEndModal();
-      } catch {
-        window.location.reload();
+      if (this.isGameEnd(item.x, item.y)) {
+        this.gameEnd();
+        return;
+      }
+
+      if (window.innerWidth / 2 < item.x) {
+        item.x -= 10
+      } else {
+        item.x += 10
+      }
+
+      if (window.innerHeight / 2 < item.y) {
+        item.y -= 5
+      } else {
+        item.y += 5
       }
     }
+
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        this.render();
+      });
+    }, 1000 / this.fps);
   }
 
   addListeners() {
     document.addEventListener('keypress', (e) => {
-      switch (e.code) {
-        case 'KeyD':
-          this.player.move('left');
-          break;
-        case 'KeyA':
-          this.player.move('right');
-          break;
-        case 'KeyW':
-          this.player.move('top');
-          break;
-        case 'KeyS':
-          this.player.move('bottom');
-          break;
+      const letterIndex = this.letters.findIndex((item) => item.text.includes(e.key))
+      if (letterIndex !== -1) {
+        this.letters.splice(letterIndex, 1)
+        this.score += 1
       }
-    });
-    document.addEventListener('keyup', () => {
-      this.checkEndLevel();
-      this.player.stop()
     })
   }
 }
 
-const game = new Game(maze, player, userInterface)
+const game = new Game(userInterface);
 
 game.init();
 
