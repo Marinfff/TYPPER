@@ -15,7 +15,7 @@ export class Player implements PlayerInterface {
   private currentFrame: number;
   private currentMove: string;
   private currentSprite: any;
-  // private sound: any;
+  private sound: any;
   private matrix: any;
   private readonly height: number;
   private readonly width: number;
@@ -37,7 +37,7 @@ export class Player implements PlayerInterface {
     this.positionX = 0;
     this.positionY = 50;
     this.currentFrame = 0;
-    // this.sound = new Audio();
+    this.sound = new Audio();
     this.sprites = {
       top: new Image(),
       bottom: new Image(),
@@ -54,6 +54,15 @@ export class Player implements PlayerInterface {
     this.matrix = matrix;
   }
 
+  reset () {
+    this.positionX = 0;
+    this.positionY = 50;
+    this.currentFrame = 0;
+    this.currentMove = "";
+    this.move('left');
+    this.stop()
+  }
+
   freeSquare(dx: any, dy: any): boolean {
     const {x, y} = this.getSquare();
     return this.matrix.getCell(y + dx, x + dy)
@@ -65,7 +74,7 @@ export class Player implements PlayerInterface {
     this.sprites.bottom.src = data.bottom.default;
     this.sprites.left.src = data.left.default;
     this.sprites.right.src = data.right.default;
-    // this.sound.src = data.audio;
+    this.sound.src = data.audio.default;
     this.currentSprite = this.sprites.left;
     this.animate();
   }
@@ -78,7 +87,7 @@ export class Player implements PlayerInterface {
   }
 
   public animate() {
-    // this.sound.play()
+    this.sound.play();
 
     this.context.clearRect(
       0,
@@ -153,7 +162,6 @@ export class Player implements PlayerInterface {
   }
 
   stop(): void {
-    this.getSquare();
     this.fps = 0;
     this.currentMove = ''
   }

@@ -36,13 +36,20 @@ export class Maze implements MazeInterface {
   }
 
   async next(): Promise<any> {
-    this.width += 3;
-    this.height += 3;
-    this.generate();
+    this.width += 2;
+    this.height += 2;
+    await this.generate();
   }
 
-  getCell (x: number, y: number) {
+  getCell(x: number, y: number) {
     return this.maze.get(x, y)
+  }
+
+  getSize() {
+    return {
+      width: this.width,
+      height: this.height
+    }
   }
 
   render(): void {

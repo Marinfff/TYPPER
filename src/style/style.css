@@ -18,20 +18,27 @@
     text-rendering: optimizeLegibility;
 }
 
+.preloader {
+    bottom: 10px;
+    right: 10px;
+}
+
 * {
     margin: 0;
     padding: 0;
 }
 
-#exit, #start, #ok {
+#exit, #start, #next {
     cursor: pointer;
 }
+
+
 
 text {
     font-size: 25px;
     font-weight: bold;
     font-family: Cristinutza;
-    fill: #a65c0c;
+    fill: #f4f6f7;
 }
 
 html, body {
@@ -49,14 +56,19 @@ canvas, svg {
     font-size: 25px;
     font-weight: bold;
     font-family: Cristinutza_2;
-    fill: #a65c0c;
+    fill: #f4f6f7;
+}
+
+.rect {
+    fill: #ce3735;
+    stroke: #f4f6f7;
 }
 
 .logo {
     font-size: 90px;
     font-weight: bold;
     font-family: Cristinutza;
-    fill: #a65c0c;
+    fill: #ce3735;
 }
 
 @media screen and (max-width: 1080px) {
