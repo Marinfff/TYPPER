@@ -1,3 +1,5 @@
+// Декларируем типы для импортов (чтоб при импорте png не выдавало ошибку)
+
 declare module "*.png" {
   const content: any;
   export default content;

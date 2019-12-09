@@ -1,16 +1,7 @@
+// Импорт текста для кнопок из json
 import Locale from '../config/locale.json';
 
-export interface UserInterfaceInterface {
-  showGameOver(score: number): void,
-
-  toggleLoader(): void,
-
-  confirmGameOver(): Promise<any>,
-
-  confirmGameStart(): Promise<any>,
-}
-
-export class UserInterface implements UserInterfaceInterface {
+export class UserInterface {
   private userInterface: any;
   private showLoader: boolean;
   private showEndModal: boolean;
@@ -20,16 +11,18 @@ export class UserInterface implements UserInterfaceInterface {
     this.userInterface = document.getElementById('interface');
     this.showLoader = false;
     this.showEndModal = false;
-    this.score = 0
+    this.score = 0;
     this.show();
   }
 
+  // Показываем модалку при фэйле
   public showGameOver(score: number) {
-    this.score = score
+    this.score = score;
     this.showEndModal = true;
     this.show();
   }
 
+  // Переключение лоадера (первый вызов включить, второй выключить)
   public toggleLoader() {
     if (this.showLoader) {
       this.showLoader = false;
@@ -40,6 +33,7 @@ export class UserInterface implements UserInterfaceInterface {
     }
   }
 
+  // Ждем когда юзер нажмет одну из кнопок (exit или reload)
   public confirmGameOver(): Promise<any> {
     const exit: any = document.getElementById('exit');
     const reload: any = document.getElementById('reload');
@@ -54,6 +48,7 @@ export class UserInterface implements UserInterfaceInterface {
     })
   }
 
+  // Ждем когда юзер нажмет кнопку "Начать игру"
   public confirmGameStart(): Promise<any> {
     const start: any = document.getElementById('start');
 
@@ -64,15 +59,18 @@ export class UserInterface implements UserInterfaceInterface {
     })
   }
 
+  // Удаляем модалку game over с экрана
   public hideEndModal() {
     this.showEndModal = false;
     this.hide();
   }
 
+  // Удаляем весь интерфейс с экрана
   private hide() {
     this.userInterface.innerHTML = '';
   }
 
+  // Отрисовываем весь svg (меню, прелоадер)
   private show() {
     const width: number = 400;
     const height: number = 75;

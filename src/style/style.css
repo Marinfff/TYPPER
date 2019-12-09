@@ -70,9 +70,4 @@ canvas, svg {
     fill: #006b29;
 }
 
-@media screen and (max-width: 1080px) {
-    body {
-        transform: scale(0.7);
-    }
-}
 
